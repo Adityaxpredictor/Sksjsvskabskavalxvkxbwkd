@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ADITYA PRIVATE</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: url("adi.jpg") no-repeat center center fixed;
+            background-size: cover;
+        }
+        .logo {
+            margin-top: 20px;
+            width: 80px;
+            height: 80px;
+            padding: 3px;
+            border: 3px solid rgb(251, 255, 0);
+            border-radius: 40px;
+            box-sizing: border-box;
+        }
+        .main, .login-box {
+            height: 620px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: rgb(255, 242, 0);
+            width: 350px;
+            background-color: rgba(0, 0, 0, 0.2);
+            text-align: center;
+            box-shadow: 0 0 5px rgb(251, 255, 0);
+        }
+        input {
+            background: transparent;
+            border: 3px solid rgb(255, 251, 0);
+            width: 250px;
+            height: 30px;
+            border-radius: 10px;
+            color: rgb(221, 255, 0);
+            text-align: center;
+            font-size: 15px;
+            font-weight: 700;
+            margin: 7px;
+        }
+        button {
+            background-color: rgb(212, 255, 0);
+            border: none;
+            border-radius: 10px;
+            width: 200px;
+            height: 50px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .time {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="login-box">
+        <img class="logo" src="logo.jpeg" alt="">
+        <h3>Enter your Key</h3>
+        <input type="text" id="keyInput" placeholder="Enter your key">
+        <button onclick="checkKey()">Login</button>
+        <p id="loginMessage" style="color: red;"></p>
+    </div>
+
+    <!-- Main Page (Hidden by Default) -->
+    <div id="mainPage" class="main" style="display: none;">
+        <img class="logo" src="logo.jpeg" alt="">
+        <b><p>𝐀𝐃𝐈𝐓𝐘𝐀 𝐏𝐑𝐈𝐕𝐀𝐓𝐄 𝐒𝐀𝐑𝐕𝐄𝐑</p></b>
+        <p id="timeLeft" class="time">Time left: -</p>
+
+        <b><input type="text" value="𝙋𝙍𝙄𝙑𝘼𝙏𝙀 𝙎𝘼𝙍𝙑𝙀𝙍 𝘽𝙔 𝘼𝘿𝙄">
+        <b><input type="text" id="registerDate" value="REGISTER DATE:-"></b>
+        <b><input type="text" id="expiryDate" value="EXPIRY DATE:-"></b>
+        <b><input type="text" value="GAME VERSION:- VERSION 4.0"></b>
+        <b><input type="text" value="GAME NAME:- 91CLUB"></b>
+        <b><input type="text" value="GAME MOD:- 100% SAFE"></b>
+        <b><p class="ser">SERVER IS CONNECTED</p></b>
+        <button onclick="openGame()">OPEN GAME</button>
+    </div>
+
+    <script>
+        // Example keys
+        const keys = {
+            "7DaysX45": "04-10-24 6:13:45",
+            "KDY54921": "04-10-24 6:13:45",
+            "BIGWIN123": "04-10-24 6:13:45"
+            // Add more keys as necessary
+        };
+
+        // Check Key Function
+        function checkKey() {
+            const keyInput = document.getElementById('keyInput').value.trim();
+            const loginMessage = document.getElementById('loginMessage');
+
+            if (keys.hasOwnProperty(keyInput)) {
+                const registerDate = new Date();
+                const expiryDate = new Date(registerDate.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days validity
+
+                // Set Register and Expiry dates in input fields
+                document.getElementById('registerDate').value = `REGISTER DATE: ${registerDate.toLocaleString()}`;
+                document.getElementById('expiryDate').value = `EXPIRY DATE: ${expiryDate.toLocaleString()}`;
+
+                // Hide login page and show main page
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('mainPage').style.display = 'flex';
+
+                // Start countdown
+                startCountdown(expiryDate);
+            } else {
+                loginMessage.textContent = "Invalid Key!";
+            }
+        }
+
+        // Countdown Timer
+        function startCountdown(expiryDate) {
+            const countdownInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = expiryDate.getTime() - now;
+
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('timeLeft').textContent = "EXPIRED";
+                } else {
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    document.getElementById('timeLeft').textContent = `Time left: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+                }
+            }, 1000);
+        }
+
+        // Open Game Function
+        function openGame() {
+            alert("Opening the game...");
+            // Add your actual game opening logic here
+        }
+    </script>
+
+</body>
+</html>

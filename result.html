@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>𝘼𝘿𝙄𝙏𝙔𝘼 𝙋𝙍𝙄𝙑𝘼𝙏𝙀 𝙎𝘼𝙍𝙑𝙀𝙍</title>
+    <style>
+        /* Importing Montserrat, Roboto, and a bold style for period/result */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400&family=Poppins:wght@600&display=swap');
+
+        /* Body styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url('aditya.jpeg') no-repeat center center/cover;
+            color: #f0f9ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Main container */
+        .container {
+            background-color: rgba(31, 41, 55, 0.8); /* Semi-transparent box */
+            border-radius: 20px;
+            padding: 30px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 10px 10px 30px rgba(15, 23, 42, 0.8), -10px -10px 30px rgba(47, 59, 83, 0.6);
+        }
+
+        /* Heading style with Montserrat font */
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            color: #38bdf8;
+            text-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8, 0 0 30px #38bdf8;
+            margin-bottom: 20px;
+        }
+
+        /* Period number styling with Poppins font */
+        #period-number {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            background: #1e293b;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: inset 5px 5px 15px #0f172a, inset -5px -5px 15px #475569;
+            margin-bottom: 20px;
+            color: #f472b6; /* A soft pink color for contrast */
+        }
+
+        /* Prediction result styling */
+        #prediction {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            background: #293144;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: inset 5px 5px 15px #1e293b, inset -5px -5px 15px #4b5563;
+            color: #38bdf8; /* Light blue to make it pop */
+        }
+
+        /* Timer styling */
+        #timer {
+            background: #293144;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: inset 5px 5px 15px #1e293b, inset -5px -5px 15px #4b5563;
+            margin-bottom: 20px;
+            color: #38bdf8;
+            font-size: 1.5rem;
+        }
+
+        /* Glowing Telegram button */
+        .telegram-button {
+            background-color: #38bdf8;
+            color: white;
+            border-radius: 25px;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px #38bdf8, 0 0 40px #38bdf8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .telegram-button:hover {
+            box-shadow: 0 0 40px #38bdf8, 0 0 80px #38bdf8;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>𝘼𝘿𝙄𝙏𝙔𝘼 𝙋𝙍𝙄𝙑𝘼𝙏𝙀 𝙎𝘼𝙍𝙑𝙀𝙍</h1>
+        <p id="period-number">Period Number: Loading...</p>
+        <p id="prediction">Prediction: Loading...</p>
+        <p id="timer">Time Left: 00:30</p>
+
+        <!-- Telegram Button -->
+        <a href="https://t.me/adityahackerr" class="telegram-button" target="_blank">Join Telegram</a>
+    </div>
+
+    <script>
+        function predictBigOrSmall(periodNumber) {
+            const lastThreeDigits = parseInt(periodNumber.slice(-3));
+            const prediction = (lastThreeDigits * 7 + 3) % 10;
+            return prediction >= 5 ? "Small" : "Big";
+        }
+
+        function updateTimer() {
+            const now = new Date();
+            
+            // Convert to Asia/Kolkata timezone
+            const tzOffset = now.getTimezoneOffset() * 60000;
+            const currentTime = new Date(now.getTime() + tzOffset + 19800000); // IST offset (5:30 hrs in ms)
+
+            // Set start time at 5:30 AM
+            const startTime = new Date(currentTime);
+            startTime.setHours(5, 30, 0, 0);
+
+            let elapsedSeconds = 0;
+            if (currentTime > startTime) {
+                elapsedSeconds = Math.floor((currentTime - startTime) / 1000);
+            }
+
+            // Calculate periods
+            const totalPeriods = Math.floor(elapsedSeconds / 30);
+            const upcomingPeriod = totalPeriods + 1;
+
+            // Format period number as yyyyMMdd10005xxxx
+            const formattedDate = currentTime.toISOString().split('T')[0].replace(/-/g, '');
+            const periodNumber = `10005${upcomingPeriod.toString().padStart(4, '0')}`;
+
+            // Predict Big or Small
+            const prediction = predictBigOrSmall(periodNumber);
+
+            // Update the webpage with period number, prediction, and countdown
+            document.getElementById('period-number').innerText = `Period Number: ${formattedDate}${periodNumber}`;
+            document.getElementById('prediction').innerText = `Prediction: ${prediction}`;
+
+            // Calculate remaining seconds in the 30-second period
+            const secondsInPeriod = elapsedSeconds % 30;
+            const remainingSeconds = 30 - secondsInPeriod;
+            document.getElementById('timer').innerText = `Time Left: ${String(Math.floor(remainingSeconds / 60)).padStart(2, '0')}:${String(remainingSeconds % 60).padStart(2, '0')}`;
+
+            // Call the function again after 1 second
+            setTimeout(updateTimer, 1000);
+        }
+
+        // Start the timer
+        updateTimer();
+    </script>
+
+</body>
+</html>
